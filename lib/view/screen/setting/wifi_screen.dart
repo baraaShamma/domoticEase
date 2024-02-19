@@ -15,7 +15,7 @@ class WifiScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Get.put(WifiController());
-      return AppBarWidgetTwo(
+    return AppBarWidgetTwo(
       title: "42".tr,
       widget: GetBuilder<WifiController>(
         builder: (controller) => Container(

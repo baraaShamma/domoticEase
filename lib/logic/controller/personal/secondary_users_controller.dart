@@ -10,10 +10,8 @@ class SecondaryUsersController extends GetxController {
   int? users_id;
 
   List secondaryUsers = [];
-  late StatusRequest statusRequest;
-
+  late StatusRequest  statusRequest;
   getSecondaryUsers() async {
-    print("===========");
     secondaryUsers.clear();
     statusRequest = StatusRequest.loading;
     update();
@@ -33,7 +31,6 @@ class SecondaryUsersController extends GetxController {
     } else {
       statusRequest = StatusRequest.serverFailure;
     }
-    print(secondaryUsers);
     update();
   }
 
