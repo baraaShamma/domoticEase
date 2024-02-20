@@ -54,7 +54,15 @@ class MyTranslation extends Translations {
           "46":"المستخدمين الاخرين",
           "47":"يمكنك عرض جميع المستخدمين الذين يمكنهم التحكم في منزلك \n و ايضا اضافة او ازالة مستخدم",
           "48":" كلمة السر",
-          "49":"يمكنك تعديل كلمة السر الخاصة بحسابك من هنا"
+          "49":"يمكنك تعديل كلمة السر الخاصة بحسابك من هنا",
+          "50":"تنبيه",
+          "51":"تم تشغيل او اطفاء احد الاجهزة من الزر",
+          "52":"تم تشغيل الجهاز بنجاح",
+          "53":"تم اطفاء الجهاز بنجاح",
+          "54":"الجهاز متوقف سابقا عن طريق الزر",
+          "55":"الجهاز يعمل سابقا عن طريق الزر",
+          "56":"",
+          "57":"",
 
         },
         "en": {
@@ -110,7 +118,15 @@ class MyTranslation extends Translations {
           "46":"Other Users",
           "47":"You can view all users who can control your home \n and also add or remove a user",
           "48":"password",
-          "49":"You can modify your account password from here"
+          "49":"You can modify your account password from here",
+          "50":"Alert",
+          "51":"One of the devices has been turned on or off using the button",
+          "52":"The device has been turned on successfully",
+          "53":"The device has been turned off successfully",
+          "54":"The device was previously stopped by the button",
+          "55":"The device previously operated via a button",
+          "56":"",
+          "57":"",
         }
       };
 }

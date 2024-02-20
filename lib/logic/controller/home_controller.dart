@@ -22,7 +22,8 @@ abstract class HomeController extends GetxController {
 
   getDevices();
 
-  updateDeviceState(String id_device, String state);
+  updateDeviceState(
+      String id_device, String state, String idEsp, String pinNumberOutput);
 }
 
 class HomeControllerImp extends HomeController {
@@ -38,15 +39,14 @@ class HomeControllerImp extends HomeController {
 
   HomeData homeData = HomeData(Get.find());
   List dataResponse = [];
-
-  void sendMessage(String id_esp, String pinOut, String state) {
-    socketChannel.sendMessage("esp_id:$id_esp:$pinOut:$state:esp");
-  }
-
   late StatusRequest statusRequest;
   StatusRequest statusRequestDevices = StatusRequest.none;
   late SocketChannel socketChannel;
   Set<String> idEsp = <String>{};
+
+  void sendMessage(String id_esp, String pinOut, String state) {
+    socketChannel.sendMessage("esp_id:$id_esp:$pinOut:$state:esp");
+  }
 
   @override
   void onInit() {
@@ -68,9 +68,42 @@ class HomeControllerImp extends HomeController {
     });
   }
 
-  void baraa(String id) async {
-    if (idEsp.contains(id)) {
-      getDevices();
+  late String idDevice;
+  late String stateDevice;
+
+  void baraa(String data) {
+    List<String> parts = data.split(':');
+    if (parts.length > 1) {
+      String firstPart = parts[0];
+      String secondPart = parts[1];
+      if (idEsp.contains(firstPart)) {
+        if (secondPart == "update") {
+          Get.snackbar("50".tr, "51".tr,
+              duration: const Duration(milliseconds: 700));
+          getDevices();
+        }
+        if (secondPart == "on") {
+          Get.snackbar("50".tr, "52".tr,
+              duration: const Duration(milliseconds: 700));
+          updateDevice(idDevice, stateDevice);
+        }
+        if (secondPart == "off") {
+          Get.snackbar("50".tr, "53".tr,
+              duration: const Duration(milliseconds: 700));
+          updateDevice(idDevice, stateDevice);
+        }
+        if (secondPart == "offDev") {
+          Get.snackbar("50".tr, "54".tr,
+              duration: const Duration(milliseconds: 700));
+          updateDevice(idDevice, stateDevice);
+        }
+        if (secondPart == "onDev") {
+          Get.snackbar("50".tr, "54".tr,
+              duration: const Duration(milliseconds: 700));
+          updateDevice(idDevice, stateDevice);
+        }
+        // getDevices();
+      }
     }
   }
 
@@ -112,6 +145,7 @@ class HomeControllerImp extends HomeController {
   getDevices() async {
     devices.clear();
     dataResponse.clear();
+    update();
     statusRequestDevices = StatusRequest.loading;
     var response = await homeData.getDataRoomsDevices(id_room.toString());
     statusRequestDevices = handlingData(response);
@@ -136,9 +170,25 @@ class HomeControllerImp extends HomeController {
   }
 
   @override
-  updateDeviceState(String id_device, String state) async {
+  updateDeviceState(String id_device, String state, String idEsp,
+      String pinNumberOutput) async {
+    if (state == "1") {
+      sendMessage(idEsp, pinNumberOutput, "1");
+      idDevice = id_device;
+      stateDevice = state;
+      update();
+    } else {
+      sendMessage(idEsp, pinNumberOutput, "0");
+      idDevice = id_device;
+      stateDevice = state;
+      update();
+    }
+  }
+
+  updateDevice(String id_device, String state) async {
     devices.clear();
     statusRequestDevices = StatusRequest.loading;
+    update();
     var response =
         await homeData.updateDeviceState(id_device.toString(), state);
     statusRequestDevices = handlingData(response);
@@ -149,7 +199,6 @@ class HomeControllerImp extends HomeController {
     } else {
       statusRequestDevices = StatusRequest.serverFailure;
     }
-
     update();
   }
 

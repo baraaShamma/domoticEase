@@ -38,20 +38,24 @@ class Devices extends StatelessWidget {
     return GetBuilder<HomeControllerImp>(
       builder: (controller) => SmartDevice(
         state: deviceModel.state == "0" ? true : false,
-        color:Theme.of(context).primaryColor,
+        color: Theme.of(context).primaryColor,
         title: deviceModel.deviceName,
         imageUrl: deviceModel.state == "0"
             ? 'assets/images/on.png'
             : 'assets/images/off.png',
         onTap: () {
           if (deviceModel.state == "1") {
-            controller.updateDeviceState(deviceModel.deviceId.toString(), "0");
-            controller.sendMessage(deviceModel.espHome.idEsp,
-                deviceModel.pinNumberOutput.toString(), "0");
+            controller.updateDeviceState(
+                deviceModel.deviceId.toString(),
+                "0",
+                deviceModel.espHome.idEsp,
+                deviceModel.pinNumberOutput.toString());
           } else {
-            controller.updateDeviceState(deviceModel.deviceId.toString(), "1");
-            controller.sendMessage(deviceModel.espHome.idEsp,
-                deviceModel.pinNumberOutput.toString(), "1");
+            controller.updateDeviceState(
+                deviceModel.deviceId.toString(),
+                "1",
+                deviceModel.espHome.idEsp,
+                deviceModel.pinNumberOutput.toString());
           }
         },
       ),
