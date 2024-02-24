@@ -1,5 +1,4 @@
 import 'package:rxdart/rxdart.dart';
-import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 class SocketChannel {
@@ -7,9 +6,9 @@ class SocketChannel {
     _startConnection();
   }
 
-  final IOWebSocketChannel Function() _getIOWebSocketChannel;
+  final WebSocketChannel Function() _getIOWebSocketChannel;
 
-  late IOWebSocketChannel _ioWebSocketChannel;
+  late WebSocketChannel _ioWebSocketChannel;
 
   WebSocketSink get _sink => _ioWebSocketChannel.sink;
 
@@ -36,14 +35,20 @@ class SocketChannel {
     }
   }
 
-  void _startConnection() {
+  void _startConnection() async {
     _ioWebSocketChannel = _getIOWebSocketChannel();
+    try {
+      await _ioWebSocketChannel.ready;
+    } catch (e) {
+      print("WebsocketChannel was unable to establish connection");
+    }
     _innerStream = _ioWebSocketChannel.stream;
     _innerStream.listen(
       (event) {
         _isFirstRestart = false;
         _outerStreamSubject.add(event);
       },
+      cancelOnError: true,
       onError: (error) {
         _handleLostConnection();
       },

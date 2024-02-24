@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:domotic_ease/core/class/status_request.dart';
 import 'package:domotic_ease/core/function/handling_data_controller.dart';
 import 'package:domotic_ease/core/services/services.dart';
@@ -7,11 +6,9 @@ import 'package:domotic_ease/data/model/device_model.dart';
 import 'package:domotic_ease/link_api.dart';
 import 'package:get/get.dart';
 import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 import '../../core/class/socket_channel.dart';
-
-// import 'package:web_socket_channel/web_socket_channel.dart';
-// import 'package:web_socket_channel/status.dart' as status;
 
 abstract class HomeController extends GetxController {
   intialData();
@@ -53,7 +50,6 @@ class HomeControllerImp extends HomeController {
     intialData();
     super.onInit();
   }
-
   @override
   intialData() async {
     users_id = myServices.sharedPreferences.getInt("users_id");
@@ -61,8 +57,45 @@ class HomeControllerImp extends HomeController {
     usernameEn = myServices.sharedPreferences.getString("first_name_en");
     await getRooms();
     await getDevices();
-    socketChannel =
-        SocketChannel(() => IOWebSocketChannel.connect(AppLink.webSocket));
+    // WebSocketChannel channel = WebSocketChannel.connect(Uri.parse(AppLink.webSocket) );
+    // try {
+    //   await channel.ready;
+    // } catch (e) {
+    //   // handle exception here
+    //   print("WebsocketChannel was unable to establishconnection");
+    // }
+    //
+    // Stream stream = channel.stream;
+    // stream.listen((event) {
+    //   print('Event from Stream: $event');
+    //
+    // },onError: (e){
+    //
+    //   // handle stream error
+    // },
+    //     onDone: (() {
+    //       // stream on done callback...
+    //     }),
+    //     cancelOnError: true
+    // );
+    // try {
+    //   socketChannel = IOWebSocketChannel.connect(Uri.parse(AppLink.webSocket));
+    //   socketChannel.stream.listen(
+    //     (dynamic message) {
+    //       print('message $message');
+    //     },
+    //     onDone: () {
+    //       print('ws channel closed');
+    //     },
+    //     cancelOnError: true,
+    //     onError: (error) {
+    //       print('ws error $error');
+    //     },
+    //   );
+    // } catch (e) {
+    //   print("object");
+    // }
+    socketChannel= SocketChannel(() => WebSocketChannel.connect(Uri.parse(AppLink.webSocket)));
     socketChannel.stream.listen((event) {
       baraa(event);
     });
